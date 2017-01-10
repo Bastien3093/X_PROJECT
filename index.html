@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type= text/css href="css/x_style.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
+	<!--	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css">	-->
+		<title>Accueil</title>
+	</head>
+
+	<body>
+	
+        <header>
+			<a id="logoAccueil" href="index.html"></a>
+
+			<div id="recherche">
+				<input type="text" name="txtRechch" placeholder="Chercher un produit">
+				<input type="submit" name="btnRechch" value="Chercher">
+			</div>
+
+			<div id="localisation">
+				<input type="text" name="txtLocalisation" size="5" maxlength="5" placeholder="25000">
+				<input type="submit" name="btnLocalisation" value="Localisation">
+			</div>
+
+			<div id="btnPanier">
+				<input type="button" value="Mon Panier" onclick="afficherPanier();">
+			</div>
+			<div id="btnCompte">
+				<input  type="button" value="Mon Compte">
+			</div>
+			
+		</header>
+		
+		<div id="bcMenu">
+			<ul id="menu">
+				<!-- formation du menu via menu.js -->
+			</ul>
+		</div>
+		
+		<aside>
+			<ul id="listeLienAside">
+				<li><a href="#">PROMOTIONS</a></li>
+				<br>
+				<li><a href="#">Liste de courses</a></li>
+				<br>
+				<li><a href="#">Suggestions</a></li>
+				<li><a href="#">A propos</a></li>
+			</ul>
+		</aside>
+
+		<!-- ***** MAIN ***** -->
+		<!-- <script> -->
+			<!-- //Hauteur du main = hauteur totale - ( hauteur header(125px) + hauteur menu(80px) + hauteur footer(25px) + marge de sécurité(10px) -> 220px ) -->
+			<!-- var hauteurMain = (hauteur - 240); -->
+				<!-- document.write('<main style="height:'+hauteurMain+'px">'); -->
+		<!-- </script> -->
+		<main>
+			<div id="bcMain">
+				BLOC MAIN ACCUEIL
+			</div>
+		</main>
+		
+		<footer>
+		
+		</footer>
+
+
+		<script type= text/javascript src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<!--	<script type= text/javascript src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>	-->
+		<script type="text/javascript" src= "js/menu.js"></script>
+		<script type="text/javascript" src= "js/produit.js"></script>
+		<script type="text/javascript" src= "js/header.js"></script>
+	
+    </body>
+</html>
