@@ -20,7 +20,7 @@ include ("connexionBD.php");
 					'<input type="button" value="-" onclick="moins(\''.$ligne->prId.'\')">'.
 					'<input id="'.$ligne->prId.'" type="text" name="txtRechch" value="0" maxlength="2">'.
 					'<input type="button" value="+" onclick="plus(\''.$ligne->prId.'\')">'.
-					'<input style="margin-left: 20px;" type="submit" value="Ajouter" onclick="ajoutPanier(\''.$ligne->prId.'\')">'.
+					'<input style="margin-left: 20px;" type="submit" value="Ajouter" onclick="ajouterPanier(\''.$ligne->prId.'\');">'.
 				'</div>'.
 			'</div>';
 	}

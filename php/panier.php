@@ -6,10 +6,10 @@ include ("connexionBD.php");
 $clId = '0';    //$clId = $_SESSION['clId'];
 
 //MENU
-if ($_POST['requete'] == 'ajoutPanier') {
+if ($_POST['requete'] == 'ajouterPanier') {
     $prId = $_POST['prId'];
-    $prQuantite = $_POST['prQuantite'];
-    ajoutPanier($connexion, $prId, $prQuantite, $clId);
+    $quantiteSaisie = $_POST['quantiteSaisie'];
+    ajouterPanier($connexion, $prId, $quantiteSaisie, $clId);
 }else if ($_POST['requete'] == 'afficherPanier') {
     afficherPanier($connexion, $clId);
 }else if ($_POST['requete'] == 'supprimerPanier') {
@@ -22,39 +22,58 @@ if ($_POST['requete'] == 'ajoutPanier') {
  * @param $connexion
  * @param $clId
  */
-function ajoutPanier($connexion, $prId, $prQuantite, $clId)
+function ajouterPanier($connexion, $prId, $quantiteSaisie, $clId)
 {
     try {
-        //Vérification de l'existance du produit à ajouter dans le panier
-        $resultats = $connexion->query("SELECT prQuantite FROM panier WHERE clId='" . $clId . "' AND prId='" . $prId . "'");
-        $count = $resultats->fetch(); //Stockage de la quantite de produit présente dans le panier dans $count
-        $resultats->closeCursor();
+        //Récupération de la quantité disponible en stock
+            $resultats = $connexion->query("SELECT prQuantiteStock FROM produit WHERE prId='" . $prId . "'");
+            $prQuantiteStock = $resultats->fetch(); //Stockage de la quantite de produit présente dans le panier dans $count
+            $prQuantiteStock = $prQuantiteStock['prQuantiteStock'];
+            $resultats->closeCursor();
 
-        if ($count['prQuantite'] == null) {
+        if ($prQuantiteStock == 0){
+            echo 'Produit indisponible !';
+        }else {
+            //Vérification de l'existance du produit dans le panier
+                $resultats = $connexion->query("SELECT prQuantite FROM panier WHERE clId='" . $clId . "' AND prId='" . $prId . "'");
+                $prQuantite = $resultats->fetch(); //Stockage de la quantite de produit présente dans le panier dans $count
+                $prQuantite = $prQuantite['prQuantite'];
+                $resultats->closeCursor();
+
             //Si le produit n'est pas dans le panier du client, on l'ajoute
-            $resultats = $connexion->query("INSERT INTO panier (prId, prQuantite, clId) VALUES ('" . $prId . "', '" . $prQuantite . "', '" . $clId . "')");
-            echo 'Article ajouté';
-        } else {
+            if ($prQuantite == null) {
+                if ($quantiteSaisie <= $prQuantiteStock) {
+                    $resultats = $connexion->query("INSERT INTO panier (prId, prQuantite, clId) VALUES ('" . $prId . "', '" . $quantiteSaisie . "', '" . $clId . "')");
+                    echo 'Article ajouté';
+                } else {
+                    echo 'Il ne reste que ' . $prQuantiteStock . ' en stock !';
+                }
+
             //Si le produit est deja dans le panier du client, on met à jour la quantité
-            $prQuantite += $count['prQuantite'];
-            //Verification du dépassement de la limite de quantité commandable
-            if ($prQuantite < 100) {
-                $resultats = $connexion->query("UPDATE panier SET prQuantite='" . $prQuantite . "' WHERE prId='" . $prId . "' AND clId='" . $clId . "'");
-                echo 'Article rajouté';
-            }else{
-                echo 'Vous ne pouvez pas ajouter plus 99 produit à votre panier !';
+            } else {
+                $newQuantite = $quantiteSaisie + $prQuantite;
+                //Verification du dépassement de la limite de quantité commandable
+                if ($newQuantite <= $prQuantiteStock) {
+                    if ($newQuantite < 100) {
+                        $resultats = $connexion->query("UPDATE panier SET prQuantite='" . $newQuantite . "' WHERE prId='" . $prId . "' AND clId='" . $clId . "'");
+                        echo 'Article rajouté';
+                    } else {
+                        echo 'Vous ne pouvez pas ajouter plus 99 mêmes produits à votre panier !';
+                    }
+                } else {
+                    if (($prQuantiteStock - $prQuantite) == 0) {
+                        echo 'Produit indisponibles, vous avez les derniers dans votre panier !';
+                    }else{
+                        echo 'Il ne reste que ' . $prQuantiteStock . ' articles en stock ! Vous ne pouvez rajouter que ' . ($prQuantiteStock - $prQuantite) . ' articles.';
+                    }
+                }
             }
         }
     } catch (PDOException $e) {
         echo 'Erreur lors de l\'ajout au panier : ' . $e->getMessage();
     }
 
-// SELECT (CASE
-//      WHEN (SELECT COUNT(prId) FROM panier WHERE clId='0' AND prId='6')=0
-//          THEN (INSERT INTO panier (prId, prQuantite, clId) VALUES ('15','15','15'))
-//      ELSE (UPDATE panier SET prQuantite='9' WHERE prId='3' AND clId='0' )
-// END)
-
+// "UPDATE panier, produit SET prQuantite='" . $prQuantite . "', prQuantiteStock='" . $prQuantiteStock . "' WHERE panier.prId='" . $prId . "' AND produitprId='" . $prId . "' AND clId='" . $clId . "'"
 }
 
 
