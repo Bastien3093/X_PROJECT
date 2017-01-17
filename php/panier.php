@@ -14,6 +14,8 @@ if ($_POST['requete'] == 'ajouterPanier') {
     afficherPanier($connexion, $clId);
 }else if ($_POST['requete'] == 'supprimerPanier') {
     supprimerPanier($connexion, $clId);
+}else if ($_POST['requete'] == 'validerPanier') {
+    validerPanier($connexion, $clId);
 }
 
 /**
@@ -84,19 +86,24 @@ function ajouterPanier($connexion, $prId, $quantiteSaisie, $clId)
  */
 function afficherPanier($connexion, $clId)
 {
-    $prId = array();
-    $prQuantite = array();
+    try {
+        $prId = array();
+        $prQuantite = array();
 
-    $resultats = $connexion->query("SELECT prId, prQuantite FROM panier WHERE clID = '" . $clId . "'");
-    $resultats->setFetchMode(PDO::FETCH_OBJ);
+        $resultats = $connexion->query("SELECT prId, prQuantite FROM panier WHERE clID = '" . $clId . "'");
+        $resultats->setFetchMode(PDO::FETCH_OBJ);
 
-    while ($ligne = $resultats->fetch()) {
-        array_push($prId, $ligne->prId);
-        array_push($prQuantite, $ligne->prQuantite);
+        while ($ligne = $resultats->fetch()) {
+            array_push($prId, $ligne->prId);
+            array_push($prQuantite, $ligne->prQuantite);
+        }
+        $resultats->closeCursor();
+
+        echo json_encode(array($prId, $prQuantite));
+
+    } catch (PDOException $e) {
+        echo 'Erreur lors de l\'affichage du panier : ' . $e->getMessage();
     }
-    $resultats->closeCursor();
-
-    echo json_encode(array($prId, $prQuantite));
 }
 
 /**
@@ -106,7 +113,23 @@ function afficherPanier($connexion, $clId)
 */
 function supprimerPanier($connexion, $clId)
 {
-    $resultats = $connexion->query("DELETE FROM panier WHERE clID = '" . $clId . "'");
+    try{
+        $resultats = $connexion->query("DELETE FROM panier WHERE clID = '" . $clId . "'");
+        echo "Panier supprimé.";
+    } catch (PDOException $e) {
+        echo 'Erreur lors de la suppression panier : ' . $e->getMessage();
+    }
+}
+
+/**
+ * Validation du panier, // acces paiement.
+ * @param $connexion
+ * @param $clId
+ */
+function validerPanier($connexion, $clId) {
+
+    echo "Panier validé.";
+
 }
 
 ?>

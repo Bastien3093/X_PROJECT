@@ -30,4 +30,3 @@ function requestCategorie(caId, caLibelle){
 
 	document.getElementById('bcMain').innerHTML = xhr.responseText;
 }
-	
