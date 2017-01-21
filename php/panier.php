@@ -2,7 +2,7 @@
 /**
  * Date: 10/01/2017
  */
-include ("connexionBD.php");
+require_once("connexionBD.php");
 $clId = '0';    //$clId = $_SESSION['clId'];
 
 //MENU

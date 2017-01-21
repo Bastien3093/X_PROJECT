@@ -2,8 +2,8 @@
 /**
  * Date: 08/01/2017
  */
-include ("connexionBD.php");
-	
+require_once("connexionBD.php");
+
 //construction tableau RAYON
 	$resultats = $connexion->query("SELECT * FROM rayon");
 	$resultats->setFetchMode(PDO::FETCH_OBJ);
@@ -43,13 +43,13 @@ include ("connexionBD.php");
 	$j=0;
 	for($i=0;$i<count($rayon[0]);$i=$i+1)
 	{
-		echo'<li><a href="#" onclick="requestRayon(\''.$rayon[0][$i].'\', \''.$rayon[1][$i].'\');">'.
+		echo'<li><a href="#" onclick="requestRayon('.$rayon[0][$i].', \''.$rayon[1][$i].'\');">'.
 					'<img src="'.$rayon[2][$i].'">'.
 					'<p>'.$rayon[1][$i].'</p></a>'.
 				'<ul>';
 		while($rayon[0][$i]==$categorie[2][$j])
 		{
-			echo	'<li><a href="#" onclick="requestCategorie(\''.$categorie[0][$j].'\', \''.$categorie[1][$j].'\');">'.
+			echo	'<li><a href="#" onclick="requestCategorie('.$categorie[0][$j].', \''.$categorie[1][$j].'\');">'.
 						$categorie[1][$j].
 					'</a></li>';
 			$j++;

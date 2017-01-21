@@ -35,14 +35,9 @@ table {
 /* ---------------------------------------------------------------
 	FEUILLE DE STYLE ORIGINALE	
 --------------------------------------------------------------- */
-html {
-	height: 100%;
-}	
-
 body {
 	margin:auto;
 	width:85%;
-	height:100%;
 }
 
 body, 
@@ -317,8 +312,7 @@ aside {
 --------------------------------------------------------------- */
 main {
 	float:right;
-	
-	height:400px; /* a modifier */
+
 	width: 85%; /* 880px */
 	
 	color:#333111;
@@ -335,70 +329,54 @@ main h1 {
 	padding:15px 0;
 }
 
+/***** image TRAVAUX *****/
+#travauxImg {
+	width:300px;
+	height:300px;
+	margin-left:35%;
+}
+
 /***** FICHE *****/
 .fiche{
 	display:inline-block;
+	width: 215px;
 
 	border-radius:2px;
 	border: 1px outset #4BBD99;
 	box-shadow: 1px 2px 2px 3px #345159;
 
-	margin:0 0 5% 3%;
+	margin:0 0 5% 2%;
+}
+/* bloc image + titre fiche */
+.fiche a {
+	display:block;
+	text-decoration:none;
+	color: #111333;
+}
+/* image de la fiche */
+.imgFiche {
+	width: 170px;
+	height: 130px;
+	margin-left:20px;
+	padding-top:10px;
+}
+/* titre */
+.fiche h5 {
+	padding:5px 0;
+
+	text-align:center;
+	font-size:15px;
+	font-weight:500;
 }
 
 /***** ficheCATEGORIE *****/
 .ficheCategorie {
-	
-	width: 200px;
 	height: 175px;
-}
-
-.ficheCategorie a {
-	display:block;
-	text-decoration:none;
-	color: #111333;
-}
-/* image */
-.ficheCategorie img {
-	width: 170px;
-	height: 130px;
-	margin-left:15px;
-	padding-top:15px;
-}
-/* titre */
-.ficheCategorie h5 {
-	padding:5px 0;
-	
-	text-align:center;
-	font-size:15px;
-	font-weight:500;
 }
 
 /***** fichePRODUIT *****/
 .ficheProduit {
-	width: 200px;
 	height: 270px;
-}
-/* bloc image + titre ficheProduit */
-.ficheProduit a {
-	display:block;
-	text-decoration:none;
-	color: #111333;
-}
-/* image */
-.ficheProduit img {
-	width: 170px;
-	height: 130px;
-	margin-left:15px;
-	padding-top:15px;
-}
-/* titre */
-.ficheProduit h5 {
-	padding:5px 0;
-	
-	text-align:center;
-	font-size:15px;
-	font-weight:500;
 }
 /* prix */
 .ficheProduit p {
@@ -411,17 +389,33 @@ main h1 {
 /* infos complementaires */
 .ficheProduit i {
 	display:block;
+	float:right;
 	padding:5px;
-	
+
 	color:#999;
 	text-align:right;
 	font-size: 10px;
 	line-height: 1.25;
 }
+/* Rupture/Fin de stock */
+.ficheProduit span {
+	float: left;
+	margin-left:5px;
+}
+.imgSpan {
+	float: left;
+	width: 22px;
+	height: 22px;
+}
+.ficheProduit span i {
+	float: right;
+	color: red;
+}
 /* barre [|-||i||+|  |ajout|] */
 #ajout {
+	clear: both;
 	display:flex;
-	padding: 0 7px;
+	padding: 0 12.5px;
 }
 .ficheProduit input[type="button"] {
 	width:35px;
