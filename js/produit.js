@@ -12,5 +12,24 @@ function moins(prId){
 }
 
 function requestProduit(prId){
-    alert(prId);
+    $.ajax({
+        url : 'php/infoProduit.php',
+        type : 'POST',
+        data : 'prId='+prId,
+        dataType : 'html',
+        success : function(reponse, statut){
+            document.getElementById('bcProduit').innerHTML = reponse;
+            $("#produit").dialog({
+                draggable: true,
+                width: 550,
+                modal: true,
+                resizable: true,
+                show: "slow"
+            });
+            document.getElementById('bcProduit').innerHTML = ""
+        },
+        error : function(resultat, statut, erreur){
+            erreurRequeteFile(statut, erreur, resultat);
+        }
+    });
 }
