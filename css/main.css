@@ -1,0 +1,121 @@
+
+/* ---------------------------------------------------------------
+	BLOC MAIN
+--------------------------------------------------------------- */
+
+main {
+    float:right;
+
+    width: 85%; /* 880px */
+
+    color:#333111;
+    box-shadow: inset 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+
+    overflow-y: auto;
+}
+
+main h1 {
+    text-align:center;
+    font-size:17px;
+    font-weight:700;
+
+    padding:15px 0;
+}
+
+/***** image TRAVAUX *****/
+#travauxImg {
+    width:300px;
+    height:300px;
+    margin-left:35%;
+}
+
+/***** FICHE *****/
+.fiche{
+    display:inline-block;
+    width: 215px;
+
+    border-radius:2px;
+    border: 1px outset #4BBD99;
+    box-shadow: 1px 2px 2px 3px #345159;
+
+    margin:0 0 5% 2%;
+}
+/* bloc image + titre fiche */
+.fiche a {
+    display:block;
+    text-decoration:none;
+    color: #111333;
+}
+/* image de la fiche */
+.imgFiche {
+    width: 170px;
+    height: 130px;
+    margin-left:20px;
+    padding-top:10px;
+}
+/* titre */
+.fiche h5 {
+    padding:5px 0;
+
+    text-align:center;
+    font-size:15px;
+    font-weight:500;
+}
+
+/***** ficheCATEGORIE *****/
+.ficheCategorie {
+    height: 175px;
+}
+
+/***** fichePRODUIT *****/
+.ficheProduit {
+    height: 270px;
+}
+/* prix */
+.ficheProduit p {
+    padding-right:20px;
+
+    text-align:right;
+    color:#111222;
+    font-size: 18px;
+}
+/* infos complementaires */
+.ficheProduit i {
+    display:block;
+    float:right;
+    padding:5px;
+
+    color:#999;
+    text-align:right;
+    font-size: 10px;
+    line-height: 1.25;
+}
+/* Rupture/Fin de stock */
+.ficheProduit span {
+    float: left;
+    margin-left:5px;
+}
+.imgSpan {
+    float: left;
+    width: 22px;
+    height: 22px;
+}
+.ficheProduit span i {
+    float: right;
+    color: red;
+}
+/* barre [|-||i||+|  |ajout|] */
+#ajout {
+    clear: both;
+    display:flex;
+    padding: 0 12.5px;
+}
+#ajout input[type="button"] {
+    width:35px;
+}
+#ajout input[type="text"]{
+    border:none;
+    width:20px;
+    height:31px;
+    padding-left:10px;
+}

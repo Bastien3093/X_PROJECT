@@ -2,7 +2,7 @@
 /**
  * Date: 08/01/2017
  */
-require_once("connexionBD.php");
+require_once("../co/connexionBD.php");
 
 //construction tableau RAYON
 	$resultats = $connexion->query("SELECT * FROM rayon");

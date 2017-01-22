@@ -46,9 +46,14 @@ function afficherPanier(){
 /**
  *
  * @param prId
+ * @param source : true si le click viens de la piche produit.
  */
-function ajouterPanier(prId){
-    var quantiteSaisie = document.getElementById(prId).value;
+function ajouterPanier(prId, source){
+
+    var quantiteSaisie;
+    if(source) quantiteSaisie = document.getElementById("pr"+prId).value;
+    else quantiteSaisie = document.getElementById(prId).value;
+
     if(quantiteSaisie != '0'){
         $.ajax({
             url : 'php/panier.php',
@@ -56,7 +61,7 @@ function ajouterPanier(prId){
             data : 'prId='+prId+'&quantiteSaisie='+quantiteSaisie+'&requete=ajouterPanier',
             dataType : 'html',
             success : function(reponse, statut){
-                alert(reponse);
+                dialogue(prId, reponse);
             },
             error : function(resultat, statut, erreur){
                 erreurRequeteFile(statut, erreur, resultat);
@@ -65,7 +70,10 @@ function ajouterPanier(prId){
     }
     document.getElementById(prId).value = '0';
 }
-
+function dialogue(prId, data){
+    $("#produit"+prId).dialog("close");
+    alert(data);
+}
 /**
  *
  */
