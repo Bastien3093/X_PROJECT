@@ -3,18 +3,21 @@
  * Date: 10/01/2017
  */
 require_once("../co/connexionBD.php");
+
 $clId = '0';    //$clId = $_SESSION['clId'];
+$requete = $_POST['requete'];
 
 //MENU
-if ($_POST['requete'] == 'ajouterPanier') {
+if ($requete == 'ajouterPanier') {
     $prId = $_POST['prId'];
     $quantiteSaisie = $_POST['quantiteSaisie'];
+
     ajouterPanier($connexion, $prId, $quantiteSaisie, $clId);
-}else if ($_POST['requete'] == 'afficherPanier') {
+}else if ($requete == 'afficherPanier') {
     afficherPanier($connexion, $clId);
-}else if ($_POST['requete'] == 'supprimerPanier') {
+}else if ($requete == 'supprimerPanier') {
     supprimerPanier($connexion, $clId);
-}else if ($_POST['requete'] == 'validerPanier') {
+}else if ($requete == 'validerPanier') {
     validerPanier($connexion, $clId);
 }
 
@@ -66,7 +69,7 @@ function ajouterPanier($connexion, $prId, $quantiteSaisie, $clId)
                     if (($prQuantiteStock - $prQuantite) == 0) {
                         echo 'Produit indisponibles, vous avez les derniers dans votre panier !';
                     }else{
-                        echo 'Il ne reste que ' . $prQuantiteStock . ' articles en stock ! Vous ne pouvez rajouter que ' . ($prQuantiteStock - $prQuantite) . ' articles.';
+                        echo 'Il ne reste que ' . $prQuantiteStock . ' article(s) en stock ! Vous ne pouvez rajouter que ' . ($prQuantiteStock - $prQuantite) . ' article(s).';
                     }
                 }
             }

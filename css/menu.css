@@ -26,25 +26,9 @@
     position: relative;
     display:inline-block;
     height:80px; /* hauteur menu */
-    width:120px;
+    width:10%; /* largeur rayon */
     padding: 5px 0px;
     border-left: 1px solid #345159;
-}
-@media (max-width: 1166px){
-    #menu > li {
-        width:100px;
-    }
-    #menu > li li {
-        min-width:100px;
-    }
-}
-@media (max-width: 900px){
-    #menu > li {
-        width:70px;
-    }
-    #menu > li li {
-        min-width:70px;
-    }
 }
 #menu > li:last-child {	border-right: 1px solid #345159; }
 
@@ -86,4 +70,14 @@
 
 #menu > li:hover ul {
     max-height: 50em;
+}
+
+/* ---------------------------------------------------------------
+	MEDIA
+--------------------------------------------------------------- */
+
+@media (max-width: 980px) {
+    #menu {
+        position:fixed;
+    }
 }

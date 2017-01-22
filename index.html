@@ -34,7 +34,7 @@
 				<input type="button" value="Mon Panier" onclick="afficherPanier();">
 			</div>
 			<div id="btnCompte">
-				<input  type="button" value="Mon Compte">
+				<input  type="button" value="Mon Compte" onclick="afficherCompte();">
 			</div>
 			
 		</header>
@@ -60,18 +60,21 @@
 			<div id="bcMain">
 				BLOC MAIN ACCUEIL
 			</div>
-			<div id="bcProduit"></div>
 		</main>
 		
 		<footer>
+            Pied de Page
+        </footer>
 
-		</footer>
+		<div id="bcProduit"></div> <!-- Div contenant la boite de dialogue d'infos produit -->
+		<div id="bcAlerte"></div> <!-- Div contenant la boite de dialogue d'alerte lors de l'ajout au panier -->
 
 		<script type= text/javascript src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 		<script type= text/javascript src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 		<script type="text/javascript" src= "js/epim.js"></script>
 		<script type="text/javascript" src= "js/menu.js"></script>
 		<script type="text/javascript" src= "js/panier.js"></script>
+		<script type="text/javascript" src= "js/compte.js"></script>
 		<script type="text/javascript" src= "js/produit.js"></script>
 	
     </body>

@@ -18,6 +18,9 @@ function afficherPanierVide() {
  *
  */
 function afficherPanier(){
+    //Fermeture de toutes les boites de dialogues
+    $(".ui-dialog-content").dialog("close");
+
     $.ajax({
         url : 'php/panier.php',
         type : 'POST',
@@ -68,11 +71,8 @@ function ajouterPanier(prId, source){
             }
         });
     }
-    document.getElementById(prId).value = '0';
-}
-function dialogue(prId, data){
-    $("#produit"+prId).dialog("close");
-    alert(data);
+    if(source) document.getElementById("pr"+prId).value = '0';
+    else document.getElementById(prId).value = '0';
 }
 /**
  *

@@ -4,11 +4,14 @@
  */
 require_once("../co/connexionBD.php");
 
+$caId = $_POST['caId'];
+$caLibelle = $_POST['caLibelle'];
+
 try {
-	$resultats = $connexion->query("SELECT * FROM produit WHERE caId='".$_POST['caId']."'");
+	$resultats = $connexion->query("SELECT * FROM produit WHERE caId='" . $caId . "'");
 	$resultats->setFetchMode(PDO::FETCH_OBJ);
 
-	echo' <h1>'.$_POST['caLibelle'].'</h1>';
+	echo' <h1>' . $caLibelle . '</h1>';
 
 	if ($resultats->rowCount() == 0) {
         echo '<img id="travauxImg" src="images/travaux.png">';
@@ -22,14 +25,16 @@ try {
                     '<p>' . $ligne->prPrixUnitaireHT . ' €</p>' .
                     '<i>' . $ligne->prPortion . '<br>prix/kg : ' . $ligne->prPrixHT . ' €</i>';
             if ($ligne->prQuantiteStock == 0) echo '<span><img class="imgSpan" src="images/warning.png"><i>En rupture !</i></span>';
-            else if ($ligne->prQuantiteStock <= 5) echo '<span><img class="imgSpan" src="images/caution.png"><i>' . $ligne->prQuantiteStock . ' restants.</i></span>';
-            echo    '<div id="ajout">' .
+            else {
+                if ($ligne->prQuantiteStock <= 5) echo '<span><img class="imgSpan" src="images/caution.png"><i>' . $ligne->prQuantiteStock . ' restants.</i></span>';
+                echo '<div id="ajout">' .
                         '<input type="button" value="-" onclick="moins(' . $ligne->prId . ')">' .
                         '<input id="' . $ligne->prId . '" type="text" name="txtRechch" value="0" maxlength="2">' .
                         '<input type="button" value="+" onclick="plus(' . $ligne->prId . ', ' . $ligne->prQuantiteStock . ')">' .
                         '<input style="margin-left: 20px;" type="submit" value="Ajouter" onclick="ajouterPanier(\'' . $ligne->prId . '\');">' .
-                    '</div>' .
-                '</div>';
+                    '</div>' ;
+            }
+            echo '</div>';
         }
     }
 	$resultats->closeCursor();
@@ -38,4 +43,3 @@ catch (PDOException $e) {
     echo 'Erreur liste produit : ' . $e->getMessage();
 }
 ?>
-

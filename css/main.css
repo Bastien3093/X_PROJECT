@@ -104,6 +104,8 @@ main h1 {
     float: right;
     color: red;
 }
+
+/* ---------------- BARRE AJOUT ---------------- */
 /* barre [|-||i||+|  |ajout|] */
 #ajout {
     clear: both;
@@ -118,4 +120,41 @@ main h1 {
     width:20px;
     height:31px;
     padding-left:10px;
+}
+
+/* ---------------- BOITE INFOS PRODUIT ---------------- */
+#prImage { float:left; }
+#prDescription { float:right; }
+
+#prImage, #prDescription {
+    max-width: 48%;
+    margin-bottom: 2%;
+}
+.produit #ajout {
+    clear: none;
+    float: right;
+}
+
+/* ---------------- BOITE ALERTE ---------------- */
+#alerte p {
+    margin: 3%;
+    font-size: medium;
+}
+#alerte input:first-child { position:relative; }
+#alerte input:last-child { float: right; }
+
+
+/* ---------------------------------------------------------------
+	MEDIA
+--------------------------------------------------------------- */
+
+
+@media (max-height: 500px) {
+    main {
+        overflow-y: unset;
+        height:100%;
+    }
+    body {
+        height:100%;
+    }
 }

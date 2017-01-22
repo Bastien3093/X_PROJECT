@@ -23,26 +23,67 @@ function moins(prId, source){
     }
 }
 
-
+/**
+ * Affichage des infos produit dans une boite de dialogue
+ * @param prId
+ */
 function requestProduit(prId){
-    $.ajax({
-        url : 'php/infoProduit.php',
-        type : 'POST',
-        data : 'prId='+prId,
-        dataType : 'html',
-        success : function(reponse, statut){
-            document.getElementById('bcProduit').innerHTML = reponse;
-            $("#produit"+prId).dialog({
-                draggable: true,
-                width: 550,
-                modal: true,
-                resizable: true,
-                show: "slow"
-            });
-            document.getElementById('bcProduit').innerHTML = ""
+    //Si la boite de dialogue a déjà été créée, on la réouvre
+    if ($("#produit"+prId).size()) {
+        $("#produit"+prId).dialog("open");
+    }else {
+        $.ajax({
+            url: 'php/infoProduit.php',
+            type: 'POST',
+            data: 'prId=' + prId,
+            dataType: 'html',
+            success: function (reponse, statut) {
+                document.getElementById('bcProduit').innerHTML = reponse;
+                $("#produit" + prId).dialog({
+                    open: function() { document.getElementById(prId).value = '0' },
+                    close: function() { document.getElementById("pr"+prId).value = '0' },
+                    draggable: true,
+                    width: 550,
+                    resizable: true,
+                    show: { effect: "blind" },
+                    hide: { effect: "slide" },
+                    closeText: "Fermer"
+                });
+            },
+            error: function (resultat, statut, erreur) {
+                erreurRequeteFile(statut, erreur, resultat);
+            }
+        });
+    }
+}
+
+/**
+ * fermeture de la boite de dialogue infos produit
+ * ouverture de l'alerte affichant la réponse de la requete
+ * @param prId
+ * @param data
+ */
+function dialogue(prId, data){
+    $("#produit"+prId).dialog("close");
+
+    data =  '<div id="alerte">' +
+                '<p>' + data + '</p>' +
+                '<input type="button" value="Afficher le Panier" onclick="afficherPanier();">'+
+                '<input type="button" value="Continuer ses achats" onclick="closeDialogue();">' +
+            '</div>';
+    document.getElementById('bcAlerte').innerHTML = data;
+    $("#bcAlerte").dialog({
+        //open: function(event, ui) { $(".ui-dialog-titlebar", ui.dialog | ui).hide(); }, //problème -> cache TOUTES les barres et bouttons close
+        close: function() {
+            document.getElementById('bcAlerte').innerHTML = "";
+            $('#bcAlerte').dialog("destroy");
         },
-        error : function(resultat, statut, erreur){
-            erreurRequeteFile(statut, erreur, resultat);
-        }
+        draggable: false,
+        resizable: false,
+        modal: true
     });
+}
+function closeDialogue(){
+    document.getElementById('bcAlerte').innerHTML = "";
+    $('#bcAlerte').dialog("destroy");
 }

@@ -7,7 +7,10 @@
 //Hauteur du main = hauteur totale - ( hauteur header(125px) + hauteur menu(80px) + hauteur footer(25px) + marge de sécurité(10px) -> 240px )
 var headerHeight = 240;
 var mainHeight = $(document).height() - headerHeight;
-document.querySelector('main').style.height = mainHeight + 'px';
+//si la hauteur du main est trop petite (ex : smartphones) main = 100%
+if (mainHeight < (550-240)) document.querySelector('main').style.height = "100%";
+//sinon hauteur fixe
+else document.querySelector('main').style.height = mainHeight + 'px';
 
 
 //window.onresize = function () {
@@ -15,8 +18,6 @@ document.querySelector('main').style.height = mainHeight + 'px';
 //    document.getElementById("bcMain").innerHTML = mainHeight;
 //    document.querySelector('main').style.height = mainHeight + 'px';
 //}
-
-
 
 
 

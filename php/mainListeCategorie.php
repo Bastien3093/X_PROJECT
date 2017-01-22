@@ -4,11 +4,14 @@
  */
 require_once("../co/connexionBD.php");
 
+$raId = $_POST['raId'];
+$raLibelle = $_POST['raLibelle'];
+
 try {
-	$resultats = $connexion->query("SELECT * FROM categorie WHERE raId='".$_POST['raId']."'");
+	$resultats = $connexion->query("SELECT * FROM categorie WHERE raId='" . $raId . "'");
 	$resultats->setFetchMode(PDO::FETCH_OBJ);
 
-	echo' <h1>'.$_POST['raLibelle'].'</h1>';
+	echo' <h1>' . $raLibelle . '</h1>';
 
 	if ($resultats->rowCount() == 0) {
 		echo '<img id="travauxImg" src="images/travaux.png">';
@@ -16,8 +19,8 @@ try {
         while ($ligne = $resultats->fetch()) {
             echo'<div class="fiche ficheCategorie">' .
 					'<a href="#" onclick="requestCategorie(' . $ligne->caId . ', \'' . $ligne->caLibelle . '\')">' .
-					'<img class="imgFiche" src="' . $ligne->caImage . '" >' .
-					'<h5>' . $ligne->caLibelle . '</h5>' .
+                        '<img class="imgFiche" src="' . $ligne->caImage . '" >' .
+                        '<h5>' . $ligne->caLibelle . '</h5>' .
 					'</a>' .
                 '</div>';
         }

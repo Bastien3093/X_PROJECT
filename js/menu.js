@@ -10,6 +10,9 @@
 	
 //Requete onclik RAYON
 function requestRayon(raId, raLibelle){
+    //Fermeture de toutes les boites de dialogues
+    $(".ui-dialog-content").dialog("close");
+
 	var donnees = "raId="+raId+"&raLibelle="+raLibelle;
 
 	var xhr = new XMLHttpRequest();
@@ -21,6 +24,9 @@ function requestRayon(raId, raLibelle){
 
 //Requete onclik CATEGORIE
 function requestCategorie(caId, caLibelle){
+    //Fermeture de toutes les boites de dialogues
+    $(".ui-dialog-content").dialog("close");
+
 	var donnees = "caId="+caId+"&caLibelle="+caLibelle;
 	
 	var xhr = new XMLHttpRequest();
