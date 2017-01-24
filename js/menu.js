@@ -23,11 +23,11 @@ function requestRayon(raId, raLibelle){
 }
 
 //Requete onclik CATEGORIE
-function requestCategorie(caId, caLibelle){
+function requestCategorie(caId, raId){
     //Fermeture de toutes les boites de dialogues
     $(".ui-dialog-content").dialog("close");
 
-	var donnees = "caId="+caId+"&caLibelle="+caLibelle;
+	var donnees = "caId="+caId+"&raId="+raId;
 	
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', 'php/mainListeProduit.php', false);

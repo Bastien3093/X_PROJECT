@@ -92,17 +92,29 @@ function afficherPanier($connexion, $clId)
     try {
         $prId = array();
         $prQuantite = array();
+        $prLibelle = array();
+        $prPrixUnitaireHT = array();
+        $prImage = array();
+        $prDescription = array();
+        $prQuantiteStock = array();
 
-        $resultats = $connexion->query("SELECT prId, prQuantite FROM panier WHERE clID = '" . $clId . "'");
+        $resultats = $connexion->query("SELECT * FROM panier, produit WHERE panier.prId = produit.prId AND clID = '" . $clId . "'");
         $resultats->setFetchMode(PDO::FETCH_OBJ);
 
+        // prId - prQuantite - clId - prId - prLibelle - prPrixUnitaireHT - prPortion - prPrixHT - prImage - prDescription - prQuantiteStock - caId
         while ($ligne = $resultats->fetch()) {
             array_push($prId, $ligne->prId);
             array_push($prQuantite, $ligne->prQuantite);
+            array_push($prLibelle, $ligne->prLibelle);
+            array_push($prPrixUnitaireHT, $ligne->prPrixUnitaireHT);
+            array_push($prImage, $ligne->prImage);
+            array_push($prDescription, $ligne->prDescription);
+            array_push($prQuantiteStock, $ligne->prQuantiteStock);
         }
         $resultats->closeCursor();
 
-        echo json_encode(array($prId, $prQuantite));
+
+        echo json_encode(array($prId, $prQuantite, $prLibelle, $prPrixUnitaireHT, $prImage, $prDescription, $prQuantiteStock));
 
     } catch (PDOException $e) {
         echo 'Erreur lors de l\'affichage du panier : ' . $e->getMessage();

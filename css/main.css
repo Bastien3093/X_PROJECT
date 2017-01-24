@@ -5,22 +5,14 @@
 
 main {
     float:right;
-
-    width: 85%; /* 880px */
+    width: 85%;
 
     color:#333111;
     box-shadow: inset 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
 
     overflow-y: auto;
 }
-
-main h1 {
-    text-align:center;
-    font-size:17px;
-    font-weight:700;
-
-    padding:15px 0;
-}
+main hr { margin: 2%; }
 
 /***** image TRAVAUX *****/
 #travauxImg {
@@ -29,14 +21,55 @@ main h1 {
     margin-left:35%;
 }
 
-/***** FICHE *****/
-.fiche{
-    display:inline-block;
-    width: 215px;
+main h1 {
+    text-align:center;
+    font-size:20px;
+    font-weight:500;
 
+    padding: 1%;
+    margin:2%;
+}
+/***** Liste des autres catégories du rayon *****/
+#listeCategorie {
+    width: 100%;
+    text-align:center;
+}
+#listeCategorie > a {
+    display: inline-block;
+    padding: 1%;
+    margin:2% 2% 0 0;
+
+    color: #333111;
+    font-size:17px;
+    font-weight:600;
+    text-decoration:none;
+
+    -webkit-transition: background-color, color .5s; /* Chrome/Safari */
+    -moz-transition: background-color, color .5s; /* Firefox (plus trop nécessaire) */
+    transition: background-color, color .5s; /* syntaxe officielle */
+}
+#listeCategorie #active {
+    color: #ffe;
+    background-color: #4BBD99;
+}
+
+
+#listeCategorie a:hover {
+    color: #ffe;
+    background-color: #D44D4A;
+}
+
+/* Bordure titre rayon, liste catégories et fiches */
+main h1, #listeCategorie > a, .fiche {
     border-radius:2px;
     border: 1px outset #4BBD99;
     box-shadow: 1px 2px 2px 3px #345159;
+}
+/***** FICHE *****/
+.fiche{
+    display:inline-block;
+    vertical-align:top;
+    width: 215px;
 
     margin:0 0 5% 2%;
 }
@@ -74,7 +107,6 @@ main h1 {
 /* prix */
 .ficheProduit p {
     padding-right:20px;
-
     text-align:right;
     color:#111222;
     font-size: 18px;
@@ -123,12 +155,10 @@ main h1 {
 }
 
 /* ---------------- BOITE INFOS PRODUIT ---------------- */
-#prImage { float:left; }
-#prDescription { float:right; }
-
-#prImage, #prDescription {
+#prImage {
+    float: left;
     max-width: 48%;
-    margin-bottom: 2%;
+    margin: 2%;
 }
 .produit #ajout {
     clear: none;
@@ -142,6 +172,19 @@ main h1 {
 }
 #alerte input:first-child { position:relative; }
 #alerte input:last-child { float: right; }
+
+
+
+/***** ----- PANIER ----- *****/
+#tbPanier img {
+    max-width: 70px;
+}
+#tbPanier  { border-collapse: collapse; }
+#tbPanier  td, #tbPanier  th {
+    border: 1px solid;
+    padding: 4px 10px;
+}
+
 
 
 /* ---------------------------------------------------------------

@@ -31,11 +31,32 @@ function afficherPanier(){
             if(reponse == ',') {
                 afficherPanierVide();
             }else {
-                var res =   '<input type="button" value="Vider le Panier" onclick="supprimerPanier();">'+
-                            '<input type="button" value="Valider le Panier" onclick="validerPanier();">';
+                var res = '<table id="tbPanier">' +
+                            '<thead>' +
+                                '<tr>' +
+                                    '<th>prID</th>' +
+                                    '<th></th>' +
+                                    '<th>Libelle</th>' +
+                                    '<th>PrixU</th>' +
+                                    '<th>Quantite</th>' +
+                                    '<th>Total</th>' +
+                                '</tr>' +
+                            '</thead>';
                 for (var i = 0; i < reponse[0].length; i++) {
-                    res += '<p>prId = ' + reponse[0][i] + '<i> Quantite = ' + reponse[1][i] + '</i></p>';
+                    //$prId, $prQuantite, $prLibelle, $prPrixUnitaireHT, $prImage, $prDescription, $prQuantiteStock
+                    res+='<tr>' +
+                            '<td>' + reponse[0][i] + '</td>' +
+                            '<td><img src="' + reponse[4][i] + '"></td>' +
+                            '<td>' + reponse[2][i] + '</td>' +
+                            '<td>' + reponse[3][i] + '</td>' +
+                            '<td>' + reponse[1][i] + '</td>' +
+                            '<td>' + (reponse[3][i]*reponse[1][i]) + '</td>' +
+                        '</tr>';
                 }
+                res += '</table>' +
+                        '<input type="button" value="Vider le Panier" onclick="supprimerPanier();">'+
+                        '<input type="button" value="Valider le Panier" onclick="validerPanier();">';
+
                 document.getElementById('bcMain').innerHTML = res;
             }
         },

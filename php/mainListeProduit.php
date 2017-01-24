@@ -5,13 +5,24 @@
 require_once("../co/connexionBD.php");
 
 $caId = $_POST['caId'];
-$caLibelle = $_POST['caLibelle'];
+$raId = $_POST['raId'];
 
 try {
-	$resultats = $connexion->query("SELECT * FROM produit WHERE caId='" . $caId . "'");
-	$resultats->setFetchMode(PDO::FETCH_OBJ);
+    $resultats = $connexion->query("SELECT DISTINCT caLibelle, caId FROM categorie WHERE raId='" . $raId . "'");
+    $resultats->setFetchMode(PDO::FETCH_OBJ);
 
-	echo' <h1>' . $caLibelle . '</h1>';
+    echo '<div id="listeCategorie">';
+    while ($ligne = $resultats->fetch()) {
+        if ($ligne->caId == $caId) echo '<a href="#" id="active" onclick="requestCategorie(\'' . $ligne->caId . '\' ,\'' . $raId . '\')">' . $ligne->caLibelle . '</a>';
+        else echo '<a href="#" onclick="requestCategorie(\'' . $ligne->caId . '\' ,\'' . $raId . '\')">' . $ligne->caLibelle . '</a>';
+    }
+    echo '</div><hr>';
+    $resultats->closeCursor();
+
+    //______________________________________________________________________________________
+
+    $resultats = $connexion->query("SELECT * FROM produit WHERE caId='" . $caId . "'");
+	$resultats->setFetchMode(PDO::FETCH_OBJ);
 
 	if ($resultats->rowCount() == 0) {
         echo '<img id="travauxImg" src="images/travaux.png">';

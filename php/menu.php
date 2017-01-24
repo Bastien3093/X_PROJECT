@@ -49,7 +49,7 @@ require_once("../co/connexionBD.php");
 				'<ul>';
 		while($rayon[0][$i]==$categorie[2][$j])
 		{
-			echo	'<li><a href="#" onclick="requestCategorie('.$categorie[0][$j].', \''.$categorie[1][$j].'\');">'.
+			echo	'<li><a href="#" onclick="requestCategorie('.$categorie[0][$j].', \''.$categorie[2][$j].'\');">'.
 						$categorie[1][$j].
 					'</a></li>';
 			$j++;
