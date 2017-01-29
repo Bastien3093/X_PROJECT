@@ -3,6 +3,11 @@
  */
 
 //***** Initialisation *****
+
+    //Variable de localisation de page (sur quelle page on est...)
+    var pageCourante = 'accueil';
+
+
 //Définition de la hauteur du main
 //Hauteur du main = hauteur totale - ( hauteur header(125px) + hauteur menu(80px) + hauteur footer(25px) + marge de sécurité(10px) -> 240px )
 var headerHeight = 240;
@@ -37,3 +42,71 @@ function erreurRequeteFile(statut, erreur, resultat){
     fileError.Close();
 }
 
+/**
+ *
+ * @param message
+ * @param bouton
+ * @param autreDonnee
+ */
+function alerte(message, bouton, autreDonnee) {
+    if($('#bcAlerte').is(':ui-dialog')) closeDialogue();
+
+    var data = '<div id="alerte">' +
+                    '<p>' + message + '</p>';
+    if(autreDonnee) data += autreDonnee;
+            data += '<input type="button" value="Annuler" onclick="closeDialogue();">' +
+                    '<input type="button" value="Confirmer" onclick="' + bouton + '">' +
+                '</div>';
+
+    document.getElementById('bcAlerte').innerHTML = data;
+    $("#bcAlerte").dialog({
+        close: function() {
+            document.getElementById('bcAlerte').innerHTML = "";
+            $('#bcAlerte').dialog("destroy");
+        },
+        draggable: false,
+        resizable: false,
+        modal: true
+    });
+}
+
+/**
+ *
+ * @param message
+ */
+function alerteSimple(message, sortie) {
+    if($('#bcAlerte').is(':ui-dialog')) closeDialogue();
+
+
+        var data = '<div id="alerte">' +
+                        '<p>' + message + '</p>';
+    if (sortie) data += '<input type="button" value="Ok" onclick="' + sortie + '">';
+    else        data += '<input type="button" value="Ok" onclick="closeDialogue();">';
+            data += '</div>';
+
+    document.getElementById('bcAlerte').innerHTML = data;
+    $("#bcAlerte").dialog({
+        close: function() {
+            document.getElementById('bcAlerte').innerHTML = "";
+            $('#bcAlerte').dialog("destroy");
+        },
+        draggable: false,
+        resizable: false,
+        modal: true
+    });
+}
+
+/**
+ *
+ */
+function closeDialogue(){
+    document.getElementById('bcAlerte').innerHTML = "";
+    $('#bcAlerte').dialog("destroy");
+}
+
+function addslashes(ch) {
+    ch = ch.replace(/\\/g, "\\\\")
+    ch = ch.replace(/\'/g, "\\'")
+    ch = ch.replace(/\"/g, "\\\"")
+    return ch
+}

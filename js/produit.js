@@ -1,6 +1,12 @@
 /**
  * Created on 09/01/2017.
  */
+/**
+ *
+ * @param prId
+ * @param prQuantiteStock
+ * @param source
+ */
 function plus(prId, prQuantiteStock, source){
     var val;
     if(source) {
@@ -12,6 +18,11 @@ function plus(prId, prQuantiteStock, source){
     }
 }
 
+/**
+ *
+ * @param prId
+ * @param source
+ */
 function moins(prId, source){
     var val;
     if(source) {
@@ -60,17 +71,22 @@ function requestProduit(prId){
 /**
  * fermeture de la boite de dialogue infos produit
  * ouverture de l'alerte affichant la réponse de la requete
+ * effectué lors de l'ajout au panier
  * @param prId
  * @param data
  */
-function dialogue(prId, data){
+function dialogueAjoutPanier(prId, data){
     $("#produit"+prId).dialog("close");
 
-    data =  '<div id="alerte">' +
-                '<p>' + data + '</p>' +
-                '<input type="button" value="Afficher le Panier" onclick="afficherPanier();">'+
-                '<input type="button" value="Continuer ses achats" onclick="closeDialogue();">' +
-            '</div>';
+    data = '<div id="alerte">' +
+                '<p>' + data + '</p>';
+
+    if (pageCourante == 'panier') data += '<input type="button" value="OK" onclick="closeDialogue();">';
+    else data +='<input type="button" value="Afficher le Panier" onclick="afficherPanier();">' +
+                '<input type="button" value="Continuer ses achats" onclick="closeDialogue();">';
+
+    data += '</div>';
+
     document.getElementById('bcAlerte').innerHTML = data;
     $("#bcAlerte").dialog({
         //open: function(event, ui) { $(".ui-dialog-titlebar", ui.dialog | ui).hide(); }, //problème -> cache TOUTES les barres et bouttons close
@@ -83,7 +99,4 @@ function dialogue(prId, data){
         modal: true
     });
 }
-function closeDialogue(){
-    document.getElementById('bcAlerte').innerHTML = "";
-    $('#bcAlerte').dialog("destroy");
-}
+

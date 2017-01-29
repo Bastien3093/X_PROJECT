@@ -1,14 +1,18 @@
 /**
  * Created on 08/01/2017.
  */
-//Initialisation du menu
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'php/menu.php', false);
-    xhr.send(null);
-    document.getElementById('menu').innerHTML = xhr.responseText;
+/**
+ * Initialisation du menu
+ */
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'php/menu.php', false);
+xhr.send(null);
+document.getElementById('menu').innerHTML = xhr.responseText;
 
-	
-//Requete onclik RAYON
+
+/**
+ * Requete onclik RAYON
+ */
 function requestRayon(raId, raLibelle){
     //Fermeture de toutes les boites de dialogues
     $(".ui-dialog-content").dialog("close");
@@ -22,8 +26,14 @@ function requestRayon(raId, raLibelle){
 	document.getElementById('bcMain').innerHTML = xhr.responseText;
 }
 
-//Requete onclik CATEGORIE
+/**
+ * Requete onclik CATEGORIE
+ * @param caId
+ * @param raId
+ */
 function requestCategorie(caId, raId){
+    pageCourante = 'produit';
+
     //Fermeture de toutes les boites de dialogues
     $(".ui-dialog-content").dialog("close");
 

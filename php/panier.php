@@ -19,6 +19,10 @@ if ($requete == 'ajouterPanier') {
     supprimerPanier($connexion, $clId);
 }else if ($requete == 'validerPanier') {
     validerPanier($connexion, $clId);
+}else if ($requete == 'supprimerProduitPanier') {
+    $prId = $_POST['prId'];
+
+    supprimerProduitPanier($connexion, $prId, $clId);
 }
 
 /**
@@ -31,49 +35,61 @@ function ajouterPanier($connexion, $prId, $quantiteSaisie, $clId)
 {
     try {
         //Récupération de la quantité disponible en stock
-            $resultats = $connexion->query("SELECT prQuantiteStock FROM produit WHERE prId='" . $prId . "'");
+            $resultats = $connexion->prepare("SELECT prQuantiteStock FROM produit WHERE prId='" . $prId . "'");
+			
+		if($resultats->execute()){
             $prQuantiteStock = $resultats->fetch(); //Stockage de la quantite de produit présente dans le panier dans $count
             $prQuantiteStock = $prQuantiteStock['prQuantiteStock'];
             $resultats->closeCursor();
 
-        if ($prQuantiteStock == 0){
-            echo 'Produit indisponible !';
-        }else {
-            //Vérification de l'existance du produit dans le panier
-                $resultats = $connexion->query("SELECT prQuantite FROM panier WHERE clId='" . $clId . "' AND prId='" . $prId . "'");
-                $prQuantite = $resultats->fetch(); //Stockage de la quantite de produit présente dans le panier dans $count
-                $prQuantite = $prQuantite['prQuantite'];
-                $resultats->closeCursor();
+			if ($prQuantiteStock == 0){
+				echo 'Produit indisponible !';
+			}else {
+				//Vérification de l'existance du produit dans le panier
+					$resultats = $connexion->prepare("SELECT prQuantite FROM panier WHERE clId='" . $clId . "' AND prId='" . $prId . "'");
+					
+					if($resultats->execute()){
+						$prQuantite = $resultats->fetch(); //Stockage de la quantite de produit présente dans le panier dans $count
+						$prQuantite = $prQuantite['prQuantite'];
+						$resultats->closeCursor();
+					}
 
-            //Si le produit n'est pas dans le panier du client, on l'ajoute
-            if ($prQuantite == null) {
-                if ($quantiteSaisie <= $prQuantiteStock) {
-                    $resultats = $connexion->query("INSERT INTO panier (prId, prQuantite, clId) VALUES ('" . $prId . "', '" . $quantiteSaisie . "', '" . $clId . "')");
-                    echo 'Article ajouté';
-                } else {
-                    echo 'Il ne reste que ' . $prQuantiteStock . ' en stock !';
-                }
+				//Si le produit n'est pas dans le panier du client, on l'ajoute
+				if ($prQuantite == null) {
+					if ($quantiteSaisie <= $prQuantiteStock) {
+						$resultats = $connexion->prepare("INSERT INTO panier (prId, prQuantite, clId) VALUES ('" . $prId . "', '" . $quantiteSaisie . "', '" . $clId . "')");
+						
+						if($resultats->execute()){
+							echo 'Article ajouté';
+						}
+					} else {
+						echo 'Il ne reste que ' . $prQuantiteStock . ' en stock !';
+					}
 
-            //Si le produit est deja dans le panier du client, on met à jour la quantité
-            } else {
-                $newQuantite = $quantiteSaisie + $prQuantite;
-                //Verification du dépassement de la limite de quantité commandable
-                if ($newQuantite <= $prQuantiteStock) {
-                    if ($newQuantite < 100) {
-                        $resultats = $connexion->query("UPDATE panier SET prQuantite='" . $newQuantite . "' WHERE prId='" . $prId . "' AND clId='" . $clId . "'");
-                        echo 'Article rajouté';
-                    } else {
-                        echo 'Vous ne pouvez pas ajouter plus 99 mêmes produits à votre panier !';
-                    }
-                } else {
-                    if (($prQuantiteStock - $prQuantite) == 0) {
-                        echo 'Produit indisponibles, vous avez les derniers dans votre panier !';
-                    }else{
-                        echo 'Il ne reste que ' . $prQuantiteStock . ' article(s) en stock ! Vous ne pouvez rajouter que ' . ($prQuantiteStock - $prQuantite) . ' article(s).';
-                    }
-                }
-            }
-        }
+				//Si le produit est deja dans le panier du client, on met à jour la quantité
+				} else {
+					$newQuantite = $quantiteSaisie + $prQuantite;
+					//Verification du dépassement de la limite de quantité commandable
+					if ($newQuantite <= $prQuantiteStock) {
+						if ($newQuantite < 100) {
+							$resultats = $connexion->prepare("UPDATE panier SET prQuantite='" . $newQuantite . "' WHERE prId='" . $prId . "' AND clId='" . $clId . "'");
+							
+							if($resultats->execute()){
+								echo 'Article rajouté';
+							}
+						} else {
+							echo 'Vous ne pouvez pas ajouter plus 99 mêmes produits à votre panier !';
+						}
+					} else {
+						if (($prQuantiteStock - $prQuantite) == 0) {
+							echo 'Produit indisponibles, vous avez les derniers dans votre panier !';
+						}else{
+							echo 'Il ne reste que ' . $prQuantiteStock . ' article(s) en stock ! Vous ne pouvez rajouter que ' . ($prQuantiteStock - $prQuantite) . ' article(s).';
+						}
+					}
+				}
+			}
+		}
     } catch (PDOException $e) {
         echo 'Erreur lors de l\'ajout au panier : ' . $e->getMessage();
     }
@@ -95,29 +111,43 @@ function afficherPanier($connexion, $clId)
         $prLibelle = array();
         $prPrixUnitaireHT = array();
         $prImage = array();
-        $prDescription = array();
-        $prQuantiteStock = array();
 
-        $resultats = $connexion->query("SELECT * FROM panier, produit WHERE panier.prId = produit.prId AND clID = '" . $clId . "'");
+        $resultats = $connexion->prepare("SELECT * FROM panier, produit WHERE panier.prId = produit.prId AND clID = '" . $clId . "'");
         $resultats->setFetchMode(PDO::FETCH_OBJ);
 
-        // prId - prQuantite - clId - prId - prLibelle - prPrixUnitaireHT - prPortion - prPrixHT - prImage - prDescription - prQuantiteStock - caId
-        while ($ligne = $resultats->fetch()) {
-            array_push($prId, $ligne->prId);
-            array_push($prQuantite, $ligne->prQuantite);
-            array_push($prLibelle, $ligne->prLibelle);
-            array_push($prPrixUnitaireHT, $ligne->prPrixUnitaireHT);
-            array_push($prImage, $ligne->prImage);
-            array_push($prDescription, $ligne->prDescription);
-            array_push($prQuantiteStock, $ligne->prQuantiteStock);
-        }
-        $resultats->closeCursor();
+		if($resultats->execute()){
+			// prId - prQuantite - clId - prId - prLibelle - prPrixUnitaireHT - prPortion - prPrixHT - prImage - prDescription - prQuantiteStock - caId
+			while ($ligne = $resultats->fetch()) {
+				array_push($prId, $ligne->prId);
+				array_push($prQuantite, $ligne->prQuantite);
+				array_push($prLibelle, $ligne->prLibelle);
+				array_push($prPrixUnitaireHT, $ligne->prPrixUnitaireHT);
+				array_push($prImage, $ligne->prImage);
+			}
+			$resultats->closeCursor();
 
 
-        echo json_encode(array($prId, $prQuantite, $prLibelle, $prPrixUnitaireHT, $prImage, $prDescription, $prQuantiteStock));
-
+			echo json_encode(array($prId, $prQuantite, $prLibelle, $prPrixUnitaireHT, $prImage));
+		}
     } catch (PDOException $e) {
         echo 'Erreur lors de l\'affichage du panier : ' . $e->getMessage();
+    }
+}
+
+/**
+ * Supprime un produit du panier
+ * @param $connexion
+ * @param $clId
+ */
+function supprimerProduitPanier($connexion, $prId, $clId){
+    try{
+        $resultats = $connexion->prepare("DELETE FROM panier WHERE clID = '" . $clId . "' AND prId = '" . $prId . "'");
+		
+		if($resultats->execute()){
+			echo "Produit supprimé du panier.";
+		}
+    } catch (PDOException $e) {
+        echo 'Erreur lors de la suppression panier : ' . $e->getMessage();
     }
 }
 
@@ -129,8 +159,11 @@ function afficherPanier($connexion, $clId)
 function supprimerPanier($connexion, $clId)
 {
     try{
-        $resultats = $connexion->query("DELETE FROM panier WHERE clID = '" . $clId . "'");
-        echo "Panier supprimé.";
+        $resultats = $connexion->prepare("DELETE FROM panier WHERE clID = '" . $clId . "'");
+		
+		if($resultats->execute()){
+			echo "Panier supprimé.";
+		}
     } catch (PDOException $e) {
         echo 'Erreur lors de la suppression panier : ' . $e->getMessage();
     }
